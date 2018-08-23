@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,64 +66,103 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
-    ArrayList<String> phones = new ArrayList();
-    ArrayAdapter<String> adapter;
+//    ArrayList<String> phones = new ArrayList();
+//    ArrayAdapter<String> adapter;
+//
+//    ArrayList<String> selectedPhones = new ArrayList();
+//    ListView phonesList;
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.listview2_layout);
+//
+//        phones.add("iPhone 7");
+//        phones.add("Samsung Galaxy S7");
+//        phones.add("Google Pixel");
+//        phones.add("Huawei P10");
+//        phones.add("HP Elite z3");
+//
+//        phonesList = (ListView) findViewById(R.id.phonesList);
+//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, phones);
+//        phonesList.setAdapter(adapter);
+//
+//        // обработка установки и снятия отметки в списке
+//        phonesList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+//            {
+//                // получаем нажатый элемент
+//                String phone = adapter.getItem(position);
+//                if(phonesList.isItemChecked(position)==true){
+//                    selectedPhones.add(phone);
+//                }
+//                else{
+//
+//                    selectedPhones.remove(phone);
+//                }
+//            }
+//        });
+//    }
+//
+//    public void add(View view){
+//
+//        EditText phoneEditText = (EditText) findViewById(R.id.phone);
+//        String phone = phoneEditText.getText().toString();
+//        if(!phone.isEmpty() && phones.contains(phone)==false){
+//            adapter.add(phone);
+//            phoneEditText.setText("");
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
+//    public void remove(View view){
+//        // получаем и удаляем выделенные элементы
+//        for(int i=0; i< selectedPhones.size();i++){
+//            adapter.remove(selectedPhones.get(i));
+//        }
+//        // снимаем все ранее установленные отметки
+//        phonesList.clearChoices();
+//        // очищаем массив выбраных объектов
+//        selectedPhones.clear();
+//
+//        adapter.notifyDataSetChanged();
+//    }
 
-    ArrayList<String> selectedPhones = new ArrayList();
-    ListView phonesList;
+
+    private List<State> states = new ArrayList();
+
+    ListView countriesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listview2_layout);
+        setContentView(R.layout.activity_main);
 
-        phones.add("iPhone 7");
-        phones.add("Samsung Galaxy S7");
-        phones.add("Google Pixel");
-        phones.add("Huawei P10");
-        phones.add("HP Elite z3");
-
-        phonesList = (ListView) findViewById(R.id.phonesList);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, phones);
-        phonesList.setAdapter(adapter);
-
-        // обработка установки и снятия отметки в списке
-        phonesList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        // начальная инициализация списка
+        setInitialData();
+        // получаем элемент ListView
+        countriesList = (ListView) findViewById(R.id.countriesList);
+        // создаем адаптер
+        StateAdapter stateAdapter = new StateAdapter(this, R.layout.list_item, states);
+        // устанавливаем адаптер
+        countriesList.setAdapter(stateAdapter);
+        // слушатель выбора в списке
+        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-            {
-                // получаем нажатый элемент
-                String phone = adapter.getItem(position);
-                if(phonesList.isItemChecked(position)==true){
-                    selectedPhones.add(phone);
-                }
-                else{
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                    selectedPhones.remove(phone);
-                }
+                // получаем выбранный пункт
+                State selectedState = (State)parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(), "Был выбран пункт " + selectedState.getName(),
+                        Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        countriesList.setOnItemClickListener(itemListener);
     }
+    private void setInitialData(){
 
-    public void add(View view){
-
-        EditText phoneEditText = (EditText) findViewById(R.id.phone);
-        String phone = phoneEditText.getText().toString();
-        if(!phone.isEmpty() && phones.contains(phone)==false){
-            adapter.add(phone);
-            phoneEditText.setText("");
-            adapter.notifyDataSetChanged();
-        }
-    }
-    public void remove(View view){
-        // получаем и удаляем выделенные элементы
-        for(int i=0; i< selectedPhones.size();i++){
-            adapter.remove(selectedPhones.get(i));
-        }
-        // снимаем все ранее установленные отметки
-        phonesList.clearChoices();
-        // очищаем массив выбраных объектов
-        selectedPhones.clear();
-
-        adapter.notifyDataSetChanged();
+        states.add(new State ("Бразилия", "Бразилиа", R.drawable.brazilia));
+        states.add(new State ("Аргентина", "Буэнос-Айрес", R.drawable.argentina));
+        states.add(new State ("Колумбия", "Богота", R.drawable.columbia));
+        states.add(new State ("Уругвай", "Монтевидео", R.drawable.uruguai));
+        states.add(new State ("Чили", "Сантьяго", R.drawable.chile));
     }
 }
