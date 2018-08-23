@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countries">
+        <item>Almaty</item>
+        <item>Astana</item>
+        <item>Karagandy</item>
+        <item>Satbayev</item>
+        <item>Zhezkazgan</item>
+    </string-array>
+</resources>
